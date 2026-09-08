@@ -1,0 +1,46 @@
+configuration:
+  primary_name:
+    name: Frigate server name
+    description: Friendly name for your primary Frigate installation, such as Home, Office, or Warehouse.
+  primary_mqtt_host:
+    name: MQTT host
+    description: Hostname or IP address of the MQTT broker used by your primary Frigate installation.
+  primary_mqtt_port:
+    name: MQTT port
+    description: MQTT broker port. The standard unencrypted MQTT port is 1883.
+  primary_mqtt_user:
+    name: MQTT username
+    description: Username for the MQTT broker, if authentication is enabled.
+  primary_mqtt_password:
+    name: MQTT password
+    description: Password for the MQTT broker, if authentication is enabled.
+  primary_mqtt_topic:
+    name: Frigate event topic
+    description: MQTT topic carrying Frigate events. The normal Frigate topic is frigate/events.
+  primary_push_cameras:
+    name: Camera filter
+    description: Optional comma-separated list of Frigate camera IDs to send to OverlookCam. Leave blank for all cameras.
+  secondary_enabled:
+    name: Enable second Frigate server
+    description: Turn this on only if this relay should also listen to a second Frigate installation.
+  secondary_name:
+    name: Second Frigate server name
+    description: Friendly name for the optional second Frigate installation.
+  secondary_mqtt_host:
+    name: Second MQTT host
+    description: Hostname or IP address of the MQTT broker used by the second Frigate installation.
+  secondary_mqtt_port:
+    name: Second MQTT port
+    description: MQTT broker port for the second Frigate installation.
+  secondary_mqtt_user:
+    name: Second MQTT username
+    description: Username for the second MQTT broker, if authentication is enabled.
+  secondary_mqtt_password:
+    name: Second MQTT password
+    description: Password for the second MQTT broker, if authentication is enabled.
+  secondary_mqtt_topic:
+    name: Second Frigate event topic
+    description: MQTT topic carrying events from the second Frigate installation.
+  secondary_push_cameras:
+    name: Second camera filter
+    description: Optional comma-separated list of camera IDs from the second Frigate server. Leave blank for all cameras.

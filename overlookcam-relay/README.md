@@ -39,4 +39,4 @@ Relay configuration is stored in the add-on data directory. The OverlookCam inst
 
 ## Multiple Frigate installations
 
-There is no fixed Home/Store or primary/secondary limit. Use **+ Add Frigate installation** in the Web UI whenever another Frigate server needs to be connected.
+Use **+ Add Frigate installation** in the Web UI to connect additional Frigate servers. You can add as many Frigate installations as needed.

@@ -1,6 +1,6 @@
 name: OverlookCam Relay
 description: Connect local Frigate MQTT events to OverlookCam Cloud Push.
-version: "0.1.0"
+version: "0.1.1"
 slug: overlookcam_relay
 init: false
 startup: services
@@ -10,37 +10,37 @@ map:
   - type: data
     read_only: false
 options:
-  source_home_name: "Home"
-  source_home_mqtt_host: ""
-  source_home_mqtt_port: 1883
-  source_home_mqtt_user: ""
-  source_home_mqtt_password: ""
-  source_home_mqtt_topic: "frigate/events"
-  source_home_push_cameras: ""
-  source_store_enabled: false
-  source_store_name: "Store"
-  source_store_mqtt_host: ""
-  source_store_mqtt_port: 1883
-  source_store_mqtt_user: ""
-  source_store_mqtt_password: ""
-  source_store_mqtt_topic: "frigate/events"
-  source_store_push_cameras: ""
+  primary_name: "Frigate"
+  primary_mqtt_host: ""
+  primary_mqtt_port: 1883
+  primary_mqtt_user: ""
+  primary_mqtt_password: ""
+  primary_mqtt_topic: "frigate/events"
+  primary_push_cameras: ""
+  secondary_enabled: false
+  secondary_name: "Frigate 2"
+  secondary_mqtt_host: ""
+  secondary_mqtt_port: 1883
+  secondary_mqtt_user: ""
+  secondary_mqtt_password: ""
+  secondary_mqtt_topic: "frigate/events"
+  secondary_push_cameras: ""
 schema:
-  source_home_name: str
-  source_home_mqtt_host: str
-  source_home_mqtt_port: port
-  source_home_mqtt_user: str?
-  source_home_mqtt_password: password?
-  source_home_mqtt_topic: str
-  source_home_push_cameras: str?
-  source_store_enabled: bool
-  source_store_name: str
-  source_store_mqtt_host: str?
-  source_store_mqtt_port: port
-  source_store_mqtt_user: str?
-  source_store_mqtt_password: password?
-  source_store_mqtt_topic: str
-  source_store_push_cameras: str?
+  primary_name: str
+  primary_mqtt_host: str
+  primary_mqtt_port: port
+  primary_mqtt_user: str?
+  primary_mqtt_password: password?
+  primary_mqtt_topic: str
+  primary_push_cameras: str?
+  secondary_enabled: bool
+  secondary_name: str
+  secondary_mqtt_host: str?
+  secondary_mqtt_port: port
+  secondary_mqtt_user: str?
+  secondary_mqtt_password: password?
+  secondary_mqtt_topic: str
+  secondary_push_cameras: str?
 arch:
   - aarch64
   - amd64

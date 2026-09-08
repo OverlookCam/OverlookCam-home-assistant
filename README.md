@@ -16,7 +16,7 @@ OverlookCam Relay connects Frigate MQTT events on your local network to the host
 5. Open the add-on's **Web UI**.
 6. Add the Frigate installation(s) you want OverlookCam to monitor.
 
-The Web UI supports any number of Frigate installations. Each source can use its own MQTT broker credentials and can optionally limit notifications to a comma-separated list of Frigate camera IDs.
+The Web UI supports any number of Frigate installations. Each installation can use its own MQTT broker credentials and can optionally limit notifications to a comma-separated list of Frigate camera IDs.
 
 ## Home Assistant Web UI
 
@@ -24,12 +24,12 @@ Version 0.2.0 and later uses Home Assistant ingress instead of exposing a fixed 
 
 - Add and remove Frigate installations.
 - Configure each MQTT host, port, username, password, and topic.
-- Limit a source to selected camera IDs.
+- Limit an installation to selected camera IDs.
 - Save the configuration and restart the relay.
 - Generate an OverlookCam pairing code.
 - Generate an OverlookCam account claim code.
 
-Relay configuration is stored persistently under the add-on data directory and existing legacy Home/Store or Primary/Secondary settings are migrated when possible.
+Relay configuration is stored persistently under the add-on data directory.
 
 ## Cloud service
 

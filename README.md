@@ -11,12 +11,25 @@ OverlookCam Relay connects Frigate MQTT events on your local network to the host
 
    `https://github.com/OverlookCam/OverlookCam-home-assistant`
 
-3. Refresh the store if necessary.
-4. Install **OverlookCam Relay**.
-5. Configure the MQTT connection used by Frigate.
-6. Start the app and enable **Start on boot**.
+3. Install **OverlookCam Relay**.
+4. Start the app and enable **Start on boot**.
+5. Open the add-on's **Web UI**.
+6. Add the Frigate installation(s) you want OverlookCam to monitor.
 
-The initial package supports one required Frigate/MQTT source and an optional second source. Each source can use its own MQTT broker credentials and can optionally limit notifications to a comma-separated list of Frigate camera IDs.
+The Web UI supports any number of Frigate installations. Each source can use its own MQTT broker credentials and can optionally limit notifications to a comma-separated list of Frigate camera IDs.
+
+## Home Assistant Web UI
+
+Version 0.2.0 and later uses Home Assistant ingress instead of exposing a fixed add-on Configuration form. From the Web UI you can:
+
+- Add and remove Frigate installations.
+- Configure each MQTT host, port, username, password, and topic.
+- Limit a source to selected camera IDs.
+- Save the configuration and restart the relay.
+- Generate an OverlookCam pairing code.
+- Generate an OverlookCam account claim code.
+
+Relay configuration is stored persistently under the add-on data directory and existing legacy Home/Store or Primary/Secondary settings are migrated when possible.
 
 ## Cloud service
 
@@ -25,10 +38,6 @@ The relay registers with the hosted OverlookCam Push Service at:
 `https://push.overlookcam.com`
 
 Its installation identity is stored persistently in the Home Assistant app data directory.
-
-## Pairing and account claim
-
-The relay includes the same pairing and account-claim utilities as the standard OverlookCam Relay distribution. These use the relay's persisted installation identity and the hosted Push Service.
 
 ## Architectures
 

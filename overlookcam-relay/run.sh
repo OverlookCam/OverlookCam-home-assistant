@@ -3,7 +3,7 @@ set -euo pipefail
 
 export OVERLOOKCAM_INSTALLATION_STATE="/data/installation.json"
 export OVERLOOKCAM_RELAY_PLATFORM="home-assistant"
-export OVERLOOKCAM_RELAY_VERSION="0.2.0"
+export OVERLOOKCAM_RELAY_VERSION="0.2.1"
 
 bashio::log.info "Starting OverlookCam Relay manager"
 cd /opt/overlookcam

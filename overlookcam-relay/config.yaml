@@ -1,6 +1,6 @@
 name: OverlookCam Relay
 description: Connect local Frigate MQTT events to OverlookCam Cloud Push.
-version: "0.2.1"
+version: "0.2.2"
 slug: overlookcam_relay
 init: false
 startup: services

@@ -1,0 +1,60 @@
+name: Home Assistant Relay CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate package layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            repository.yaml
+            overlookcam-relay/config.yaml
+            overlookcam-relay/build.yaml
+            overlookcam-relay/Dockerfile
+            overlookcam-relay/run.sh
+            overlookcam-relay/relay.py
+            overlookcam-relay/hosted_push.py
+            overlookcam-relay/manager.py
+            overlookcam-relay/server.py
+            overlookcam-relay/requirements.txt
+          )
+          for path in "${required[@]}"; do
+            [[ -f "$path" ]] || { echo "Missing Home Assistant package file: $path" >&2; exit 1; }
+          done
+          grep -q '^slug: overlookcam_relay$' overlookcam-relay/config.yaml
+          grep -q '^boot: auto$' overlookcam-relay/config.yaml
+          grep -q '^host_network: true$' overlookcam-relay/config.yaml
+          bash -n overlookcam-relay/run.sh
+
+      - name: Compile Python
+        shell: bash
+        run: |
+          python3 -m py_compile \
+            overlookcam-relay/relay.py \
+            overlookcam-relay/hosted_push.py \
+            overlookcam-relay/pair.py \
+            overlookcam-relay/claim.py \
+            overlookcam-relay/manager.py \
+            overlookcam-relay/server.py
+
+      - name: Build Home Assistant amd64 image
+        shell: bash
+        run: |
+          docker build \
+            --build-arg BUILD_FROM=ghcr.io/home-assistant/amd64-base-python:3.12-alpine3.20 \
+            -t overlookcam-relay-ha:test \
+            overlookcam-relay

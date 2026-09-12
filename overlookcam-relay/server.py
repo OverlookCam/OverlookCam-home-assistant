@@ -5,7 +5,10 @@ from typing import Any
 
 from waitress import serve
 
+from camera_control import camera_control
 from manager import PORT, app, start_relay, stop_relay
+
+app.register_blueprint(camera_control)
 
 
 def shutdown(signum: int, frame: Any) -> None:

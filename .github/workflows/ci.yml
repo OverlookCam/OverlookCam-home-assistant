@@ -32,6 +32,9 @@ jobs:
             overlookcam-relay/server.py
             overlookcam-relay/requirements.txt
           )
+          if [[ -f overlookcam-relay/camera_control.py ]]; then
+            required+=(overlookcam-relay/camera_control.py)
+          fi
           for path in "${required[@]}"; do
             [[ -f "$path" ]] || { echo "Missing Home Assistant package file: $path" >&2; exit 1; }
           done
@@ -43,13 +46,19 @@ jobs:
       - name: Compile Python
         shell: bash
         run: |
-          python3 -m py_compile \
-            overlookcam-relay/relay.py \
-            overlookcam-relay/hosted_push.py \
-            overlookcam-relay/pair.py \
-            overlookcam-relay/claim.py \
-            overlookcam-relay/manager.py \
+          set -euo pipefail
+          files=(
+            overlookcam-relay/relay.py
+            overlookcam-relay/hosted_push.py
+            overlookcam-relay/pair.py
+            overlookcam-relay/claim.py
+            overlookcam-relay/manager.py
             overlookcam-relay/server.py
+          )
+          if [[ -f overlookcam-relay/camera_control.py ]]; then
+            files+=(overlookcam-relay/camera_control.py)
+          fi
+          python3 -m py_compile "${files[@]}"
 
       - name: Build Home Assistant amd64 image
         shell: bash

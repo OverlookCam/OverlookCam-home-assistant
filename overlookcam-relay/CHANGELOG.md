@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.7
+
+- Fixed Reolink floodlight authentication when camera credentials contain characters such as `!`.
+- Improved reliability of Patio/floodlight camera controls used by the OverlookCam mobile app.
+
 ## 0.2.6
 
 - Added Reolink floodlight camera controls for compatible cameras.

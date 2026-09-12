@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlencode
+from urllib.parse import quote
 
 import httpx
 from flask import Blueprint, jsonify, request
@@ -51,12 +51,19 @@ def _matches_camera(camera: str, config: dict[str, Any]) -> bool:
     return camera.strip().lower() == str(config["camera"]).strip().lower()
 
 
+def _reolink_query_value(value: str) -> str:
+    # Reolink CGI authentication rejects some otherwise-valid percent-encoded
+    # credential characters. Keep characters Reolink accepts literally while
+    # still escaping query delimiters so credentials cannot corrupt the URL.
+    return quote(value, safe="!$'()*,-._~:@")
+
+
 def _reolink_url(config: dict[str, Any], command: str) -> str:
-    query = urlencode({
-        "cmd": command,
-        "user": config["username"],
-        "password": config["password"],
-    })
+    query = (
+        f"cmd={quote(command, safe='')}"
+        f"&user={_reolink_query_value(str(config['username']))}"
+        f"&password={_reolink_query_value(str(config['password']))}"
+    )
     return f"{config['host']}/cgi-bin/api.cgi?{query}"
 
 

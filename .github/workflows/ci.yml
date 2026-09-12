@@ -1,0 +1,47 @@
+name: Home Assistant Relay CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate Python
+        run: |
+          python -m py_compile \
+            overlookcam-relay/relay.py \
+            overlookcam-relay/hosted_push.py \
+            overlookcam-relay/pair.py \
+            overlookcam-relay/claim.py \
+            overlookcam-relay/manager.py \
+            overlookcam-relay/server.py \
+            overlookcam-relay/camera_control.py
+
+      - name: Validate shell
+        run: bash -n overlookcam-relay/run.sh
+
+      - name: Validate package metadata
+        run: |
+          grep -q '^slug: overlookcam_relay$' overlookcam-relay/config.yaml
+          grep -q '^host_network: true$' overlookcam-relay/config.yaml
+          grep -q '^ingress: true$' overlookcam-relay/config.yaml
+
+      - name: Build amd64 add-on image
+        run: |
+          docker build \
+            --build-arg BUILD_FROM=ghcr.io/home-assistant/amd64-base-python:3.12-alpine3.20 \
+            -t overlookcam-relay-ha:test \
+            overlookcam-relay

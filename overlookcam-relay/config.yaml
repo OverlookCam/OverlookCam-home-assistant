@@ -1,6 +1,6 @@
 name: OverlookCam Relay
 description: Connect local Frigate MQTT events to OverlookCam Cloud Push.
-version: "0.2.4"
+version: "0.2.6"
 slug: overlookcam_relay
 init: false
 startup: services
@@ -16,3 +16,15 @@ arch:
   - aarch64
   - amd64
   - armv7
+options:
+  floodlight_camera: ""
+  floodlight_host: ""
+  floodlight_username: ""
+  floodlight_password: ""
+  floodlight_verify_ssl: false
+schema:
+  floodlight_camera: str?
+  floodlight_host: str?
+  floodlight_username: str?
+  floodlight_password: str?
+  floodlight_verify_ssl: bool

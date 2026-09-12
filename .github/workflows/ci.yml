@@ -13,13 +13,37 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Validate package layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            repository.yaml
+            overlookcam-relay/config.yaml
+            overlookcam-relay/build.yaml
+            overlookcam-relay/Dockerfile
+            overlookcam-relay/run.sh
+            overlookcam-relay/relay.py
+            overlookcam-relay/hosted_push.py
+            overlookcam-relay/manager.py
+            overlookcam-relay/server.py
+            overlookcam-relay/requirements.txt
+          )
+          if [[ -f overlookcam-relay/camera_control.py ]]; then
+            required+=(overlookcam-relay/camera_control.py)
+          fi
+          for path in "${required[@]}"; do
+            [[ -f "$path" ]] || { echo "Missing Home Assistant package file: $path" >&2; exit 1; }
+          done
+          grep -q '^slug: overlookcam_relay$' overlookcam-relay/config.yaml
+          grep -q '^boot: auto$' overlookcam-relay/config.yaml
+          grep -q '^host_network: true$' overlookcam-relay/config.yaml
+          bash -n overlookcam-relay/run.sh
 
-      - name: Validate Python
+      - name: Compile Python
         shell: bash
         run: |
           set -euo pipefail
@@ -34,18 +58,10 @@ jobs:
           if [[ -f overlookcam-relay/camera_control.py ]]; then
             files+=(overlookcam-relay/camera_control.py)
           fi
-          python -m py_compile "${files[@]}"
+          python3 -m py_compile "${files[@]}"
 
-      - name: Validate shell
-        run: bash -n overlookcam-relay/run.sh
-
-      - name: Validate package metadata
-        run: |
-          grep -q '^slug: overlookcam_relay$' overlookcam-relay/config.yaml
-          grep -q '^host_network: true$' overlookcam-relay/config.yaml
-          grep -q '^ingress: true$' overlookcam-relay/config.yaml
-
-      - name: Build amd64 add-on image
+      - name: Build Home Assistant amd64 image
+        shell: bash
         run: |
           docker build \
             --build-arg BUILD_FROM=ghcr.io/home-assistant/amd64-base-python:3.12-alpine3.20 \

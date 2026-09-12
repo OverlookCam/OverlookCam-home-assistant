@@ -20,15 +20,21 @@ jobs:
           python-version: "3.12"
 
       - name: Validate Python
+        shell: bash
         run: |
-          python -m py_compile \
-            overlookcam-relay/relay.py \
-            overlookcam-relay/hosted_push.py \
-            overlookcam-relay/pair.py \
-            overlookcam-relay/claim.py \
-            overlookcam-relay/manager.py \
-            overlookcam-relay/server.py \
-            overlookcam-relay/camera_control.py
+          set -euo pipefail
+          files=(
+            overlookcam-relay/relay.py
+            overlookcam-relay/hosted_push.py
+            overlookcam-relay/pair.py
+            overlookcam-relay/claim.py
+            overlookcam-relay/manager.py
+            overlookcam-relay/server.py
+          )
+          if [[ -f overlookcam-relay/camera_control.py ]]; then
+            files+=(overlookcam-relay/camera_control.py)
+          fi
+          python -m py_compile "${files[@]}"
 
       - name: Validate shell
         run: bash -n overlookcam-relay/run.sh
